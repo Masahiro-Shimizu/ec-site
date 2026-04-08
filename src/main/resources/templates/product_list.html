@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>商品一覧</title>
+</head>
+<body>
+	<h1>商品一覧</h1>
+	<!-- 商品を1つずつループして表示 -->
+	<div th:each="product : ${products}">
+		<div>
+			<!-- 商品画像(クリックで詳細画面へ) -->
+			<a th:href="@{/products/{id}(id=${product.productId})}">
+				<img th:src="${product.imgPath}" width="200" height="150" oneerror="this.src='/images/no_image.jpg'">
+			</a>
+			<!-- 商品情報 -->
+			<p th:text="${product.productName}"></p>
+			<p th:text="${product.company.companyName}"></p>
+			<p th:text="'¥' + ${product.price}"></p>
+			<p th:text="'¥' + ${product.taxPrice} + '(税込)'"></p>
+		</div>
+		
+		<a th:href="@{/top}">TOPに戻る</a>
+</body>
+</html>

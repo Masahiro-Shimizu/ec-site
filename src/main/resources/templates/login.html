@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaff.org">
+<head>
+<meta charset="UTF-8">
+<title>ログイン</title>
+</head>
+<body>
+	<h1>ログイン</h1>
+	
+	<!-- エラーメッセージがある場合のみ表示 -->
+	<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+	
+	<form th:action="@{login}" method="post">
+		<div>
+			<label>メールアドレス</label>
+			<input type="email" name="email">
+		</div>
+		<div>
+			<label>パスワード</label>
+			<input type="password" name="password">
+		</div>
+		<button type="submit">ログイン</button>
+	</form>
+	
+	<a th:href="@{/register}">新規登録はこちら</a>
+
+</body>
+</html>

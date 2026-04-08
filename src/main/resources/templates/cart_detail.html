@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>カート詳細</title>
+</head>
+<body>
+	<h1>カート詳細</h1>
+	
+	<div th:each="item : ${cartItems}">
+		<p>商品名：<span th:text="${item.product.productName}"></span></p>
+		<p>数量：<span th:text="${item.quantity}"></span></p>
+		<p>価格：<span th:text="'¥' + ${item.product.price}"></span></p>
+		<p>消費税込み金額：<span th:text="'¥' + ${item.product.taxPrice * item.quantity}"></span></p>
+		
+		<!-- 削除ボタン -->
+		<form th:action="@{/cart/remove}" method="post">
+			<input type="hidden" name="cartId" th:value="${item.cartId}">
+			<button type="submit">削除</button>
+		</form>
+	</div>
+	
+	<a th:href="@{/order}">レジに進む</a>
+</body>
+</html>

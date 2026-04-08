@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>商品詳細</title>
+</head>
+<body>
+	<h1>商品詳細</h1>
+	
+	<!-- 商品画像 -->
+	<img th:src="${product.imgPath}" width="300" height="200" oneerror="this.src='/images/no_image.jpg'">
+	
+	<!-- 商品情報 -->
+	<p>商品名：<span th:text="${product.productName}"></span></p>
+	<p>メーカー：<span th:text="${product.company.companyName}"></span></p>
+	<p>価格：<span th:text="'¥' + ${product.price}"></span></p>
+	<p>税込価格：<span th:text="'¥' + ${product.taxPrice}"></span></p>
+	<p>在庫数：<span th:text="${product.stock}"></span></p>
+	
+	<!-- カートに入れるフォーム -->
+	<form th:action="@{/cart/add}" method="post">
+		<input type="hidden" name="productId" th:value="${product.productId}">
+		<label>数量</label>
+		<select name="quantity">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+		<button type="submit">カートに入れる</button>
+	</form>
+	
+	<!-- ボタン -->
+	<a th:href="@{/products}">商品一覧に戻る</a>
+</body>
+</html>
