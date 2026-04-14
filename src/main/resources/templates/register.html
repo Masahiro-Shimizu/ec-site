@@ -4,39 +4,129 @@
   <meta charset="UTF-8">
   <title>新規登録</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    body {
+      background-color: #f3f3f3;
+    }
+    .auth-container {
+      max-width: 350px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    .auth-logo {
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+    .auth-logo span {
+      color: #3498db;
+    }
+    .auth-container h1 {
+      font-size: 22px;
+      font-weight: normal;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .form-group label {
+      font-size: 13px;
+      font-weight: bold;
+      color: #333;
+    }
+    .form-group input {
+      border: 1px solid #a9a9a9;
+      border-radius: 3px;
+      padding: 8px;
+      font-size: 14px;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #e77600;
+      box-shadow: 0 0 3px rgba(231,118,0,0.5);
+    }
+    .btn-register {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+      border: 1px solid #a88734;
+      border-radius: 3px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #333;
+      margin-top: 10px;
+    }
+    .btn-register:hover {
+      background: linear-gradient(to bottom, #f5d78e, #eeb933);
+    }
+    .divider {
+      text-align: center;
+      margin: 15px 0;
+      font-size: 12px;
+      color: #767676;
+    }
+    .btn-login {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(to bottom, #f7f8f8, #e7e9ec);
+      border: 1px solid #adb1b8;
+      border-radius: 3px;
+      font-size: 14px;
+      cursor: pointer;
+      color: #333;
+      text-align: center;
+      display: block;
+      text-decoration: none;
+    }
+    .btn-login:hover {
+      background: linear-gradient(to bottom, #e7e9ec, #d9dce1);
+    }
+    .error {
+      color: #c40000;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ユーザー新規登録</h1>
+  <div class="auth-container">
+    <div class="auth-logo">Cytech <span>EC.</span></div>
 
-    <!-- 全体のエラーメッセージ -->
+    <h1>新規アカウント作成</h1>
+
     <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
 
     <form th:action="@{/register}" method="post" th:object="${user}">
       <div class="form-group">
         <label>ユーザー名</label>
-        <input type="text" th:field="*{userName}">
-        <!-- フィールドごとのエラーメッセージ -->
+        <input type="text" th:field="*{userName}" placeholder="山田 太郎">
         <p class="error" th:if="${#fields.hasErrors('userName')}"
            th:errors="*{userName}"></p>
       </div>
       <div class="form-group">
         <label>メールアドレス</label>
-        <input type="email" th:field="*{email}">
+        <input type="email" th:field="*{email}" placeholder="example@email.com">
         <p class="error" th:if="${#fields.hasErrors('email')}"
            th:errors="*{email}"></p>
       </div>
       <div class="form-group">
         <label>パスワード</label>
-        <input type="password" name="password">
+        <input type="password" name="password" placeholder="8文字以上">
       </div>
       <div class="form-group">
         <label>パスワード（確認用）</label>
-        <input type="password" name="passwordConfirm">
+        <input type="password" name="passwordConfirm" placeholder="パスワードを再入力">
       </div>
-      <button class="btn" type="submit">登録</button>
-      <a th:href="@{/login}">戻る</a>
+      <button class="btn-register" type="submit">アカウントを作成</button>
     </form>
+
+    <div class="divider">すでにアカウントをお持ちの方はこちら</div>
+
+    <a class="btn-login" th:href="@{/login}">ログインはこちら</a>
   </div>
 </body>
 </html>
