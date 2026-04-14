@@ -31,7 +31,9 @@ public class OrderService {
     }
 
     // カートから注文を確定してDBに保存する
-    public void placeOrder(String email, String address) {
+    public void placeOrder(String email, String recipientName,
+                           String address, String apartmentName,
+                           String paymentMethod) {
         User user = userRepository.findByEmail(email).orElseThrow();
         List<Cart> cartItems = cartRepository.findByUser(user);
 
@@ -44,6 +46,10 @@ public class OrderService {
         order.setUser(user);
         order.setTotalAmount(totalAmount);
         order.setStatus("注文確定");
+        order.setRecipientName(recipientName);
+        order.setAddress(address);
+        order.setApartmentName(apartmentName);
+        order.setPaymentMethod(paymentMethod);
 
         List<OrderItem> orderItems = new ArrayList<>();
         for (Cart cart : cartItems) {
@@ -60,23 +66,24 @@ public class OrderService {
     }
 
     // 単品購入: カートを経由せずに直接注文する
-    // productId: 購入する商品のID
-    // quantity: 購入数量
     public void placeSingleOrder(String email, Integer productId,
-                                 Integer quantity, String address) {
+                                 Integer quantity, String recipientName,
+                                 String address, String apartmentName,
+                                 String paymentMethod) {
         User user = userRepository.findByEmail(email).orElseThrow();
         Product product = productRepository.findById(productId).orElseThrow();
 
-        // 合計金額を計算
         int totalAmount = product.getTaxPrice() * quantity;
 
-        // Orderオブジェクトを作成
         Order order = new Order();
         order.setUser(user);
         order.setTotalAmount(totalAmount);
         order.setStatus("注文確定");
+        order.setRecipientName(recipientName);
+        order.setAddress(address);
+        order.setApartmentName(apartmentName);
+        order.setPaymentMethod(paymentMethod);
 
-        // OrderItemを作成
         List<OrderItem> orderItems = new ArrayList<>();
         OrderItem item = new OrderItem();
         item.setOrder(order);

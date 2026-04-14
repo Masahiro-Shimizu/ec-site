@@ -16,24 +16,28 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "orders")
 public class Order {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orderId; //注文ID（主キー）
-	
-	private Integer totalAmount; //合計金額
-	private String status; //注文ステータス
-	
-	//注文したユーザーと紐づく
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
-	
-	// 注文に含まれる精進一覧と紐づく
-	// CascadeType.ALL: Orderを保存・削除するとOrderItemも連動する
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-	private List<OrderItem> orderItems;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer orderId;        // 注文ID（主キー）
+
+    private Integer totalAmount;    // 合計金額
+    private String status;          // 注文ステータス
+    private String recipientName;   // 受取人名
+    private String address;         // 住所
+    private String apartmentName;   // アパート名等
+    private String paymentMethod;   // 支払い方法
+
+    // 注文したユーザーと紐づく
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // 注文に含まれる商品一覧と紐づく
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
+    // getter・setter
 	public Integer getOrderId() {
 		return orderId;
 	}
@@ -58,6 +62,38 @@ public class Order {
 		this.status = status;
 	}
 
+	public String getRecipientName() {
+		return recipientName;
+	}
+
+	public void setRecipientName(String recipientName) {
+		this.recipientName = recipientName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getApartmentName() {
+		return apartmentName;
+	}
+
+	public void setApartmentName(String apartmentName) {
+		this.apartmentName = apartmentName;
+	}
+
+	public String getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -72,7 +108,5 @@ public class Order {
 
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
-	}
-	
-	
+	}    
 }

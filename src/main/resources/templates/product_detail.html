@@ -34,12 +34,12 @@
       </div>
       <button class="btn" type="submit">カートに入れる</button>
     </form>
-	
-	<form th:action="@{/order/single}" method="get">
-	  <input type="hidden" name="productId" th:value="${product.productId}">
-	  <input type="hidden" name="quantity" value="1">
-	  <button class="btn" type="submit">単品購入</button>
-	</form>
+
+    <form th:action="@{/order/single}" method="get">
+      <input type="hidden" name="productId" th:value="${product.productId}">
+      <input type="hidden" name="quantity" value="1">
+      <button class="btn" type="submit">単品購入</button>
+    </form>
 
     <h2>口コミ</h2>
     <div th:if="${#lists.isEmpty(reviews)}">
@@ -49,11 +49,19 @@
       <p th:text="'ユーザー名：' + ${review.dummyUserName}"></p>
       <p th:text="'評価：' + ${review.rating} + '★'"></p>
       <p th:text="'コメント：' + ${review.comment}"></p>
+      <p th:if="${review.createdAt != null}"
+         th:text="'投稿日：' + ${#temporals.format(review.createdAt, 'yyyy/MM/dd')}"></p>
+      <div th:if="${review.reviewImgPath != null and !review.reviewImgPath.isEmpty()}">
+        <img th:src="${review.reviewImgPath}" width="200" height="150">
+      </div>
+      <hr>
     </div>
 
-    <a class="btn" th:href="@{/review(productId=${product.productId})}">口コミ投稿</a>
     <a class="btn" th:href="@{/products}">商品一覧に戻る</a>
+    <a class="btn" th:href="@{/review(productId=${product.productId})}">口コミ投稿</a>
   </div>
+
+  <div th:replace="~{footer :: footer}"></div>
 
 </body>
 </html>

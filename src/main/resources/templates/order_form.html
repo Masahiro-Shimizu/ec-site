@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
@@ -12,6 +12,7 @@
   <div class="container">
     <h1>購入品詳細画面</h1>
 
+    <!-- 購入商品一覧 -->
     <div th:each="item : ${cartItems}">
       <p th:text="${item.product.productName}"></p>
       <p th:text="'数量：' + ${item.quantity}"></p>
@@ -19,15 +20,42 @@
     </div>
 
     <form th:action="@{/order/confirm}" method="post">
+
+      <!-- 受け取り場所 -->
+      <h2>受け取り場所</h2>
       <div class="form-group">
-        <label>お届け先住所</label>
-        <input type="text" name="address" placeholder="住所を入力してください">
+        <label>名前</label>
+        <input type="text" name="recipientName" placeholder="山田 太郎">
       </div>
+      <div class="form-group">
+        <label>住所</label>
+        <input type="text" name="address" placeholder="東京都渋谷区...">
+      </div>
+      <div class="form-group">
+        <label>アパート名等</label>
+        <input type="text" name="apartmentName" placeholder="〇〇マンション101号室">
+      </div>
+
+      <!-- お支払い情報 -->
+      <h2>お支払い情報</h2>
+      <div class="form-group">
+        <label>支払い方法</label><br>
+        <input type="radio" name="paymentMethod" value="クレジットカード"> クレジットカード
+        <input type="radio" name="paymentMethod" value="銀行振込"> 銀行振込
+        <input type="radio" name="paymentMethod" value="代金引換"> 代金引換
+      </div>
+      <div class="form-group">
+        <label>カード情報（ダミー）</label>
+        <input type="text" name="cardNumber" placeholder="1234567890123456" maxlength="16">
+      </div>
+
       <button class="btn" type="submit">確認</button>
     </form>
 
     <a class="btn" th:href="@{/cart}">カートに戻る</a>
   </div>
+
+  <div th:replace="~{footer :: footer}"></div>
 
 </body>
 </html>
