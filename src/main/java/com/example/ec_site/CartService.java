@@ -48,4 +48,10 @@ public class CartService {
 	public void removeFromCart(Long cartId) {
 		cartRepository.deleteById(cartId);
 	}
+
+	public void updateQuantity(Long cartId, Integer quantity) {
+		Cart cart = cartRepository.findById(cartId).orElseThrow();
+		cart.setQuantity(quantity);
+		cartRepository.save(cart);
+	}
 }

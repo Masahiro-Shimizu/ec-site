@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>カート追加</title>
+  <meta charset="UTF-8">
+  <title>カート追加</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-	<h1>カート追加</h1>
-	
-	<!-- 追加した商品の情報を表示 -->
-	<div th:each="item : ${cartItems}">
-		<p>商品名：<span th:text="${item.product.productName}"></span></p>
-		<p>個数：<span th:text="${item.quantity}"></span></p>
-		<p>カート内合計：<span th:text="${item.product.taxPrice * item.quantity}"></span>円</p>
-	</div>
-	
-	<!-- ボタン -->
-	<form th:action="@{/cart/remove}" method="post">
-		<a th:href="@{/cart}">カートに移動</a>
-	</form>
-	<a th:href="@{/top}">TOP画面に戻る</a>
+
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="container">
+    <h1>カート追加画面</h1>
+
+    <div th:each="item : ${cartItems}">
+      <p th:text="${item.product.productName}"></p>
+      <p th:text="'個数：' + ${item.quantity}"></p>
+      <p th:text="'カート内の合計：¥' + ${item.product.taxPrice * item.quantity}"></p>
+    </div>
+
+    <a class="btn" th:href="@{/cart}">カートに移動</a>
+    <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+  </div>
+
 </body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>マイページ</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="container">
+    <h1>マイページ</h1>
+
+    <h2>ユーザー情報</h2>
+    <p>ユーザー名：<span th:text="${user.userName}"></span></p>
+    <p>メールアドレス：<span th:text="${user.email}"></span></p>
+
+    <h2>注文履歴</h2>
+    <div th:if="${#lists.isEmpty(orders)}">
+      <p>注文履歴はありません</p>
+    </div>
+    <div th:each="order : ${orders}">
+      <p th:text="'注文ID：' + ${order.orderId}"></p>
+      <p th:text="'合計金額：¥' + ${order.totalAmount}"></p>
+      <p th:text="'ステータス：' + ${order.status}"></p>
+      <div th:each="item : ${order.orderItems}">
+        <p th:text="'商品名：' + ${item.product.productName}"></p>
+        <p th:text="'数量：' + ${item.quantity}"></p>
+        <p th:text="'価格：¥' + ${item.price}"></p>
+      </div>
+      <hr>
+    </div>
+
+    <a class="btn" th:href="@{/top}">TOPに戻る</a>
+  </div>
+
+</body>
+</html>

@@ -1,69 +1,98 @@
 package com.example.ec_site;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-// @Controller: このクラスがコントローラー層であることをSprongに伝える
-// URLのルーティングと画面遷移を担当する
+import jakarta.validation.Valid;
+
 @Controller
 public class AuthController {
 
-	// UserServiceをコンストラクタインジェクションで受け取る
-	// Springが自動でUserServiceのインスタンスを渡してくれる
     private final UserService userService;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final SaleItemRepository saleItemRepository;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService,
+                          OrderRepository orderRepository,
+                          UserRepository userRepository,
+                          ProductRepository productRepository,
+                          SaleItemRepository saleItemRepository) {
         this.userService = userService;
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.saleItemRepository = saleItemRepository;
     }
 
-    // ログイン画面の表示
-    // GETリクエスト: URLにアクセスされたとき画面を表示するだけ
-    // @RequestParam(required = false): errorパラメータは任意(なくてもOK)
     @GetMapping("/login")
-    public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
-    	// ログイン失敗時にURLに?errorが付くのでエラーメッセージを渡す
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+                            Model model) {
         if (error != null) {
             model.addAttribute("errorMessage", "メールアドレスまたはパスワードが違います");
         }
         return "login";
     }
 
-    // 新規画面登録の表示
-    // 空のUserオブジェクトをModelに渡してThymeleafのth:objectで使えるようにする
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
-    // 新規登録処理
-    // POSTリクエスト: フォームからデータを受け取って登録処理を行う
-    // User user: th:objectで紐づいたフォームの値が自動でセットされる
-    // @RequestParam String password: name="password"の入力値を受け取る
-    // @RequestParam String passwordConfirm: name="passwordConfirm"の入力値を受け取る
     @PostMapping("/register")
-    public String register(User user, @RequestParam String password, @RequestParam String passwordConfirm, Model model) {
-        // パスワードと確認用のパスワードが一致するか確認
-    	if (!password.equals(passwordConfirm)) {
-            model.addAttribute("errorMessage", "パスワードが一致しません");
-            // 入力済みの内容を保持して登録画面に戻る
-            model.addAttribute("user", user);
+    public String register(@Valid User user,
+                           BindingResult bindingResult,
+                           @RequestParam String password,
+                           @RequestParam String passwordConfirm,
+                           Model model) {
+        if (bindingResult.hasErrors()) {
             return "register";
         }
-    	// UserServiceに登録処理を依頼（パスワードの暗号化・DB保存）
+        if (!password.equals(passwordConfirm)) {
+            model.addAttribute("errorMessage", "パスワードが一致しません");
+            return "register";
+        }
+        if (password.length() < 8) {
+            model.addAttribute("errorMessage", "パスワードは8文字以上で入力してください");
+            return "register";
+        }
         userService.register(user, password);
-        
-        // 登録完了後はログイン画面へリダイレクト
         return "redirect:/login";
     }
-    
-    // TOP画面の表示
-    // ログイン成功後に遷移する画面
+
+ // TOP画面の表示
     @GetMapping("/top")
-    public String topPage() {
+    public String topPage(Model model) {
+        List<SaleItem> saleItems = saleItemRepository.findAll();
+
+        // SaleItemをSaleItemDtoに変換する
+        // 各セール品に対応する商品情報を取得して割引価格を計算する
+        List<SaleItemDto> salesItemDtos = new ArrayList<>();
+        for (SaleItem saleItem : saleItems) {
+            Product product = productRepository.findById(saleItem.getProductId()).orElseThrow();
+            salesItemDtos.add(new SaleItemDto(saleItem, product));
+        }
+
+        model.addAttribute("salesItems", salesItemDtos);
         return "top";
+    }
+
+    // マイページの表示
+    @GetMapping("/mypage")
+    public String myPage(Principal principal, Model model) {
+        User user = userRepository.findByEmail(principal.getName()).orElseThrow();
+        model.addAttribute("user", user);
+        model.addAttribute("orders", orderRepository.findByUser(user));
+        return "mypage";
     }
 }

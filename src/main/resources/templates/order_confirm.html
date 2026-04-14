@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>購入確認</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="container">
+    <h1>購入確認画面</h1>
+
+    <div th:each="item : ${cartItems}">
+      <p th:text="${item.product.productName}"></p>
+      <p th:text="'数量：' + ${item.quantity}"></p>
+      <p th:text="'価格：¥' + ${item.product.taxPrice * item.quantity}"></p>
+    </div>
+
+    <p>お届け先：<span th:text="${address}"></span></p>
+
+    <form th:action="@{/order/complete}" method="post">
+      <input type="hidden" name="address" th:value="${address}">
+      <button class="btn" type="submit">購入</button>
+    </form>
+
+    <a class="btn" th:href="@{/order}">編集</a>
+  </div>
+
+</body>
+</html>

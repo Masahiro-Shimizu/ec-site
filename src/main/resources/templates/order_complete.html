@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>注文完了</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="container">
+    <h1>注文完了</h1>
+    <p th:text="${message}"></p>
+    <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+  </div>
+
+</body>
+</html>

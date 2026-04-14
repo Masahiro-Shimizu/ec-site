@@ -3,31 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>新規登録</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-  <h1>ユーザー新規登録</h1>
+  <div class="container">
+    <h1>ユーザー新規登録</h1>
 
-  <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+    <!-- 全体のエラーメッセージ -->
+    <p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
 
-  <form th:action="@{/register}" method="post" th:object="${user}">
-    <div>
-      <label>ユーザー名</label>
-      <input type="text" th:field="*{userName}">
-    </div>
-    <div>
-      <label>メールアドレス</label>
-      <input type="email" th:field="*{email}">
-    </div>
-    <div>
-      <label>パスワード</label>
-      <input type="password" name="password">
-    </div>
-    <div>
-      <label>パスワード（確認用）</label>
-      <input type="password" name="passwordConfirm">
-    </div>
-    <button type="submit">登録</button>
-    <a th:href="@{/login}">戻る</a>
-  </form>
+    <form th:action="@{/register}" method="post" th:object="${user}">
+      <div class="form-group">
+        <label>ユーザー名</label>
+        <input type="text" th:field="*{userName}">
+        <!-- フィールドごとのエラーメッセージ -->
+        <p class="error" th:if="${#fields.hasErrors('userName')}"
+           th:errors="*{userName}"></p>
+      </div>
+      <div class="form-group">
+        <label>メールアドレス</label>
+        <input type="email" th:field="*{email}">
+        <p class="error" th:if="${#fields.hasErrors('email')}"
+           th:errors="*{email}"></p>
+      </div>
+      <div class="form-group">
+        <label>パスワード</label>
+        <input type="password" name="password">
+      </div>
+      <div class="form-group">
+        <label>パスワード（確認用）</label>
+        <input type="password" name="passwordConfirm">
+      </div>
+      <button class="btn" type="submit">登録</button>
+      <a th:href="@{/login}">戻る</a>
+    </form>
+  </div>
 </body>
 </html>

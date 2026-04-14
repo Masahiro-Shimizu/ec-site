@@ -1,25 +1,32 @@
 <!DOCTYPE html>
-<html  xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>カート詳細</title>
+  <meta charset="UTF-8">
+  <title>カート詳細</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-	<h1>カート詳細</h1>
-	
-	<div th:each="item : ${cartItems}">
-		<p>商品名：<span th:text="${item.product.productName}"></span></p>
-		<p>数量：<span th:text="${item.quantity}"></span></p>
-		<p>価格：<span th:text="'¥' + ${item.product.price}"></span></p>
-		<p>消費税込み金額：<span th:text="'¥' + ${item.product.taxPrice * item.quantity}"></span></p>
-		
-		<!-- 削除ボタン -->
-		<form th:action="@{/cart/remove}" method="post">
-			<input type="hidden" name="cartId" th:value="${item.cartId}">
-			<button type="submit">削除</button>
-		</form>
-	</div>
-	
-	<a th:href="@{/order}">レジに進む</a>
+
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="container">
+    <h1>カート詳細画面</h1>
+
+    <div th:each="item : ${cartItems}">
+      <p th:text="${item.product.productName}"></p>
+      <p th:text="'価格：¥' + ${item.product.price}"></p>
+      <p th:text="'消費税込み金額：¥' + ${item.product.taxPrice}"></p>
+      <p th:text="'数量：' + ${item.quantity}"></p>
+
+      <form th:action="@{/cart/remove}" method="post">
+        <input type="hidden" name="cartId" th:value="${item.cartId}">
+        <button class="btn btn-red" type="submit">削除</button>
+      </form>
+    </div>
+
+    <a class="btn" th:href="@{/order}">レジに進む</a>
+    <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+  </div>
+
 </body>
 </html>

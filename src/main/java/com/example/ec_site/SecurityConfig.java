@@ -26,7 +26,7 @@ public class SecurityConfig {
 		// URLごとのアクセス制御
 		http.authorizeHttpRequests(auth -> auth
 		     // /register と /login はログインなしでアクセス可能
-			.requestMatchers("/register", "/login").permitAll()
+			.requestMatchers("/register", "/login", "/logout").permitAll()
 			// 上記以外のURLはログイン必須
 			.anyRequest().authenticated()
 			)
@@ -47,7 +47,7 @@ public class SecurityConfig {
 		// ログアウトの設定
 		.logout(logout -> logout
 			// ログアウト後に遷移するURL
-			.logoutSuccessUrl("/logout")
+			.logoutSuccessUrl("/login?logout")
 			.permitAll()
 			);
 		

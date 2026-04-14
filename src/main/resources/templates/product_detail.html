@@ -1,37 +1,59 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>商品詳細</title>
+  <meta charset="UTF-8">
+  <title>商品詳細</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-	<h1>商品詳細</h1>
+
+  <div th:replace="~{header :: header}"></div>
+
+  <div class="container">
+    <h1>商品詳細</h1>
+
+    <img th:src="${product.imgPath}" width="300" height="200">
+
+    <p>商品名：<span th:text="${product.productName}"></span></p>
+    <p>メーカー：<span th:text="${product.company.companyName}"></span></p>
+    <p>価格：<span th:text="'¥' + ${product.price}"></span></p>
+    <p>税込価格：<span th:text="'¥' + ${product.taxPrice}"></span></p>
+    <p>在庫数：<span th:text="${product.stock}"></span></p>
+
+    <form th:action="@{/cart/add}" method="post">
+      <input type="hidden" name="productId" th:value="${product.productId}">
+      <div class="form-group">
+        <label>数量</label>
+        <select name="quantity">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <button class="btn" type="submit">カートに入れる</button>
+    </form>
 	
-	<!-- 商品画像 -->
-	<img th:src="${product.imgPath}" width="300" height="200" oneerror="this.src='/images/no_image.jpg'">
-	
-	<!-- 商品情報 -->
-	<p>商品名：<span th:text="${product.productName}"></span></p>
-	<p>メーカー：<span th:text="${product.company.companyName}"></span></p>
-	<p>価格：<span th:text="'¥' + ${product.price}"></span></p>
-	<p>税込価格：<span th:text="'¥' + ${product.taxPrice}"></span></p>
-	<p>在庫数：<span th:text="${product.stock}"></span></p>
-	
-	<!-- カートに入れるフォーム -->
-	<form th:action="@{/cart/add}" method="post">
-		<input type="hidden" name="productId" th:value="${product.productId}">
-		<label>数量</label>
-		<select name="quantity">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-		</select>
-		<button type="submit">カートに入れる</button>
+	<form th:action="@{/order/single}" method="get">
+	  <input type="hidden" name="productId" th:value="${product.productId}">
+	  <input type="hidden" name="quantity" value="1">
+	  <button class="btn" type="submit">単品購入</button>
 	</form>
-	
-	<!-- ボタン -->
-	<a th:href="@{/products}">商品一覧に戻る</a>
+
+    <h2>口コミ</h2>
+    <div th:if="${#lists.isEmpty(reviews)}">
+      <p>口コミはありません</p>
+    </div>
+    <div th:each="review : ${reviews}">
+      <p th:text="'ユーザー名：' + ${review.dummyUserName}"></p>
+      <p th:text="'評価：' + ${review.rating} + '★'"></p>
+      <p th:text="'コメント：' + ${review.comment}"></p>
+    </div>
+
+    <a class="btn" th:href="@{/review(productId=${product.productId})}">口コミ投稿</a>
+    <a class="btn" th:href="@{/products}">商品一覧に戻る</a>
+  </div>
+
 </body>
 </html>
