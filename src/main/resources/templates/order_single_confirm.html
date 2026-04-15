@@ -9,26 +9,16 @@
 
   <div th:replace="~{header :: header}"></div>
 
-  <div class="container">
+  <div class="container" style="max-width: 600px;">
     <h1>購入確認画面</h1>
 
-    <!-- 注文内容の確認 -->
-    <h2>ご注文内容</h2>
-    <p>商品名：<span th:text="${product.productName}"></span></p>
-    <p>数量：<span th:text="${quantity}"></span></p>
-    <p>消費税込み金額：<span th:text="'¥' + ${product.taxPrice * quantity}"></span></p>
-
-    <!-- 配送先情報 -->
-    <h2>配送先</h2>
     <p>名前：<span th:text="${recipientName}"></span></p>
     <p>住所：<span th:text="${address}"></span></p>
-    <p>アパート名等：<span th:text="${apartmentName}"></span></p>
+    <p>アパート名：<span th:text="${apartmentName}"></span></p>
+    <p>商品名：<span th:text="${product.productName}"></span></p>
+    <p>個数：<span th:text="${quantity}"></span></p>
+    <p>合計金額：¥<span th:text="${product.taxPrice * quantity}"></span></p>
 
-    <!-- 支払い情報 -->
-    <h2>お支払い情報</h2>
-    <p>支払い方法：<span th:text="${paymentMethod}"></span></p>
-
-    <!-- 注文確定フォーム -->
     <form th:action="@{/order/single/complete}" method="post">
       <input type="hidden" name="productId" th:value="${product.productId}">
       <input type="hidden" name="quantity" th:value="${quantity}">
@@ -36,10 +26,11 @@
       <input type="hidden" name="address" th:value="${address}">
       <input type="hidden" name="apartmentName" th:value="${apartmentName}">
       <input type="hidden" name="paymentMethod" th:value="${paymentMethod}">
-      <button class="btn" type="submit">購入</button>
+      <div class="login-buttons">
+        <a class="btn btn-red" th:href="@{/order/single(productId=${product.productId}, quantity=${quantity})}">編集</a>
+        <button class="btn" type="submit">購入</button>
+      </div>
     </form>
-
-    <a class="btn" th:href="@{/order/single(productId=${product.productId}, quantity=${quantity})}">編集</a>
   </div>
 
   <div th:replace="~{footer :: footer}"></div>

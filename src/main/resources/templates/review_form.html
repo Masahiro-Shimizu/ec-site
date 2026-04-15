@@ -9,10 +9,9 @@
 
   <div th:replace="~{header :: header}"></div>
 
-  <div class="container">
+  <div class="container" style="max-width: 600px;">
     <h1>口コミ投稿画面</h1>
 
-    <!-- enctype="multipart/form-data": ファイルアップロードに必要 -->
     <form th:action="@{/review}" method="post" enctype="multipart/form-data">
       <input type="hidden" name="productId" th:value="${productId}">
 
@@ -22,24 +21,29 @@
       </div>
       <div class="form-group">
         <label>評価</label>
-        <select name="rating">
-          <option value="1">1★</option>
-          <option value="2">2★</option>
-          <option value="3">3★</option>
-          <option value="4">4★</option>
-          <option value="5">5★</option>
+        <select name="rating" style="width: auto;">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
         </select>
       </div>
       <div class="form-group">
-        <label>コメント</label>
-        <textarea name="comment" maxlength="300" placeholder="300文字以内で入力してください"></textarea>
+        <label>メールアドレス</label>
+        <input type="email" name="email" placeholder="メールアドレス">
       </div>
       <div class="form-group">
-        <label>画像（任意）</label>
+        <label>コメント</label>
+        <textarea name="comment" maxlength="300"
+                  style="width: 100%; height: 100px;"></textarea>
+      </div>
+      <div class="form-group">
         <input type="file" name="imgFile" accept="image/*">
       </div>
-	  <button class="btn" type="submit">投稿</button>
-	  <a class="btn" th:href="@{/products/{id}(id=${productId})}">戻る</a>
+      <div style="text-align: center;">
+        <button class="btn" type="submit">投稿</button>
+      </div>
     </form>
   </div>
 

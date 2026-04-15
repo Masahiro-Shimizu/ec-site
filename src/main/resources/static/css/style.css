@@ -1,6 +1,6 @@
 /* 全体の基本設定 */
 *{
-	marhin: 0;
+	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
@@ -69,6 +69,25 @@ h2{
 	color: #2c3e50;
 }
 
+/* ログインボタン横並び */
+.login-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+/* セールバナー */
+.sale-banner {
+  background-color: #f1c40f;
+  color: #333;
+  text-align: center;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
 /* ボタン */
 .btn{
 	display: inline-block;
@@ -107,12 +126,51 @@ h2{
 
 .form-group input,
 .form-group select,
-.form-group textarea{
-	width: 100px;
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	font-size: 14px;
+.form-group textarea {
+  width: 100%; 
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* カート追加画面 */
+.cart-added-layout {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.cart-added-img {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.cart-added-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* カート詳細画面 */
+.cart-detail-layout {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.cart-detail-info {
+  flex: 1;
+}
+
+.cart-detail-summary {
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
 }
 
 /* エラーメッセージ */
@@ -144,6 +202,21 @@ h2{
 .product-card p{
 	margin-top: 8px;
 	font-size: 14px;
+}
+
+/* 購入完了画面 */
+.order-complete-item {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.order-complete-img {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 /* フッター */

@@ -12,21 +12,46 @@
   <div class="container">
     <h1>カート詳細画面</h1>
 
-    <div th:each="item : ${cartItems}">
-      <p th:text="${item.product.productName}"></p>
-      <p th:text="'価格：¥' + ${item.product.price}"></p>
-      <p th:text="'消費税込み金額：¥' + ${item.product.taxPrice}"></p>
-      <p th:text="'数量：' + ${item.quantity}"></p>
+	<div th:each="item : ${cartItems}" class="cart-detail-layout">
+	  <!-- 左：商品画像 -->
+	  <img th:src="${item.product.imgPath}" class="cart-added-img">
 
-      <form th:action="@{/cart/remove}" method="post">
-        <input type="hidden" name="cartId" th:value="${item.cartId}">
-        <button class="btn btn-red" type="submit">削除</button>
-      </form>
-    </div>
+	  <!-- 中央：商品情報・数量・削除 -->
+	  <div class="cart-detail-info">
+	    <p th:text="'商品名：' + ${item.product.productName}"></p>
+	    <div class="form-group">
+	      <label>数量：</label>
+	      <select style="width: auto;">
+	        <option th:each="i : ${#numbers.sequence(1, 10)}"
+	                th:value="${i}"
+	                th:text="${i}"
+	                th:selected="${i == item.quantity}">
+	        </option>
+	      </select>
+	    </div>
+	    <form th:action="@{/cart/remove}" method="post">
+	      <input type="hidden" name="cartId" th:value="${item.cartId}">
+	      <button class="btn btn-red" type="submit">削除</button>
+	    </form>
+	    <p th:text="'価格：¥' + ${item.product.price}"></p>
+	    <p th:text="'消費税込み金額：¥' + ${item.product.taxPrice}"></p>
+	  </div>
 
-    <a class="btn" th:href="@{/order}">レジに進む</a>
-    <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
-  </div>
+	  <!-- 右：合計 -->
+	  <div class="cart-detail-summary">
+	    <p th:text="'個数：' + ${item.quantity}"></p>
+	    <p th:text="'金額：¥' + ${item.product.price}"></p>
+	    <p th:text="'消費税込み金額：¥' + ${item.product.taxPrice}"></p>
+	  </div>
+	</div>
+
+	<!-- レジに進むはループの外に1つだけ -->
+	<div style="text-align: right; margin-top: 20px;">
+	  <p th:text="'合計：¥' + ${totalPrice}"></p>
+	  <a class="btn" th:href="@{/order}">レジに進む</a>
+	</div>
+
+  <div th:replace="~{footer :: footer}"></div>
 
 </body>
 </html>

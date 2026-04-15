@@ -10,12 +10,12 @@
   <div th:replace="~{header :: header}"></div>
 
   <div class="container">
-    <h1>商品一覧</h1>
+    <h1>商品一覧画面</h1>
 
     <div class="product-grid">
       <div class="product-card" th:each="product : ${products}">
         <a th:href="@{/products/{id}(id=${product.productId})}">
-          <img th:src="${product.imgPath}" width="200" height="150">
+          <img th:src="${product.imgPath}">
         </a>
         <p th:text="${product.productName}"></p>
         <p th:text="${product.company.companyName}"></p>

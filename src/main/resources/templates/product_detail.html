@@ -4,61 +4,148 @@
   <meta charset="UTF-8">
   <title>商品詳細</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    .product-detail-layout {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    .product-main {
+      flex: 2;
+    }
+    .product-main img {
+      width: 100%;
+      max-width: 450px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .product-sidebar {
+      flex: 1;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      height: fit-content;
+    }
+    .product-sidebar .btn {
+      width: 100%;
+      margin-bottom: 10px;
+      display: block;
+      text-align: center;
+    }
+    .product-sidebar .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e74c3c;
+      margin: 10px 0 5px;
+    }
+    .product-sidebar .tax-price {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    .product-sidebar .stock {
+      font-size: 14px;
+      color: #27ae60;
+      margin-bottom: 15px;
+    }
+    .review-section {
+      margin-top: 30px;
+      border-top: 2px solid #ddd;
+      padding-top: 20px;
+    }
+    .review-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .star-rating {
+      color: #f39c12;
+    }
+    .bottom-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
   <div th:replace="~{header :: header}"></div>
 
   <div class="container">
-    <h1>商品詳細</h1>
+    <h1>商品詳細画面</h1>
 
-    <img th:src="${product.imgPath}" width="300" height="200">
+    <div class="product-detail-layout">
 
-    <p>商品名：<span th:text="${product.productName}"></span></p>
-    <p>メーカー：<span th:text="${product.company.companyName}"></span></p>
-    <p>価格：<span th:text="'¥' + ${product.price}"></span></p>
-    <p>税込価格：<span th:text="'¥' + ${product.taxPrice}"></span></p>
-    <p>在庫数：<span th:text="${product.stock}"></span></p>
+      <!-- 左側：画像・商品情報 -->
+      <div class="product-main">
+        <img th:src="${product.imgPath}">
 
-    <form th:action="@{/cart/add}" method="post">
-      <input type="hidden" name="productId" th:value="${product.productId}">
-      <div class="form-group">
-        <label>数量</label>
-        <select name="quantity">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+        <p>商品名：<span th:text="${product.productName}"></span></p>
+        <p>メーカー名：<span th:text="${product.company.companyName}"></span></p>
+        <p>価格：<span th:text="'¥' + ${product.price}"></span></p>
+        <p>税込価格：<span th:text="'¥' + ${product.taxPrice}"></span></p>
+        <p>在庫数：<span th:text="${product.stock}"></span></p>
       </div>
-      <button class="btn" type="submit">カートに入れる</button>
-    </form>
 
-    <form th:action="@{/order/single}" method="get">
-      <input type="hidden" name="productId" th:value="${product.productId}">
-      <input type="hidden" name="quantity" value="1">
-      <button class="btn" type="submit">単品購入</button>
-    </form>
+      <!-- 右側：サイドバー -->
+      <div class="product-sidebar">
+        <form th:action="@{/cart/add}" method="post">
+          <input type="hidden" name="productId" th:value="${product.productId}">
+          <button class="btn" type="submit">カートに入れる</button>
+          <div class="form-group">
+            <label>数量</label>
+            <select name="quantity">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+        </form>
 
-    <h2>口コミ</h2>
-    <div th:if="${#lists.isEmpty(reviews)}">
-      <p>口コミはありません</p>
-    </div>
-    <div th:each="review : ${reviews}">
-      <p th:text="'ユーザー名：' + ${review.dummyUserName}"></p>
-      <p th:text="'評価：' + ${review.rating} + '★'"></p>
-      <p th:text="'コメント：' + ${review.comment}"></p>
-      <p th:if="${review.createdAt != null}"
-         th:text="'投稿日：' + ${#temporals.format(review.createdAt, 'yyyy/MM/dd')}"></p>
-      <div th:if="${review.reviewImgPath != null and !review.reviewImgPath.isEmpty()}">
-        <img th:src="${review.reviewImgPath}" width="200" height="150">
+        <p class="price" th:text="'価格：¥' + ${product.price}"></p>
+        <p class="tax-price" th:text="'税込価格：¥' + ${product.taxPrice}"></p>
+        <p class="stock" th:text="'在庫表示：' + ${product.stock}"></p>
       </div>
-      <hr>
+
     </div>
 
-    <a class="btn" th:href="@{/products}">商品一覧に戻る</a>
-    <a class="btn" th:href="@{/review(productId=${product.productId})}">口コミ投稿</a>
+    <!-- 口コミ -->
+    <div class="review-section">
+      <h2>＜口コミ＞</h2>
+      <div th:if="${#lists.isEmpty(reviews)}">
+        <p>口コミはありません</p>
+      </div>
+      <div th:each="review : ${reviews}" class="review-card">
+        <p>ユーザー名：<span th:text="${review.dummyUserName}"></span>
+           　投稿日時：<span th:if="${review.createdAt != null}"
+                          th:text="${#temporals.format(review.createdAt, 'yyyy/MM/dd')}"></span>
+        </p>
+        <p>コメント：<span th:text="${review.comment}"></span></p>
+        <p>評価（5段階）：<span class="star-rating" th:text="${'★'.repeat(review.rating)}"></span></p>
+        <div th:if="${review.reviewImgPath != null and !review.reviewImgPath.isEmpty()}">
+          <img th:src="${review.reviewImgPath}" width="200" height="150">
+        </div>
+      </div>
+    </div>
+
+    <!-- 下部ボタン -->
+    <div class="bottom-buttons">
+      <form th:action="@{/order/single}" method="get">
+        <input type="hidden" name="productId" th:value="${product.productId}">
+        <input type="hidden" name="quantity" value="1">
+        <button class="btn btn-red" type="submit">単品購入</button>
+      </form>
+      <a class="btn" th:href="@{/review(productId=${product.productId})}">口コミ投稿</a>
+    </div>
+
   </div>
 
   <div th:replace="~{footer :: footer}"></div>

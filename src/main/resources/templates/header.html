@@ -25,11 +25,15 @@
 			</form>
 			
 			<!-- マイページ・ユーザー名・ログアウト -->
-			<a th:href="@{/mypage}">マイページ</a>
-			<span th:text="${#authentication.name}"></span>
-			<form th:action="@{/logout}" method="post" style="display:inline;">
-				<button type="submit">ログアウト</button>
-			</form>
+			<div style="display:flex; align-items:center; gap:10px;">
+			  <a th:href="@{/mypage}">マイページ</a>
+			  <div style="display:flex; flex-direction:column; font-size:13px;">
+			    <span style="font-size:13px;">ユーザー名：<span th:text="${#authentication.name}"></span></span>
+			    <form th:action="@{/logout}" method="post">
+			      <button type="submit" style="background:none; border:none; color:white; cursor:pointer; padding:0; font-size:13px;">ログアウト</button>
+			    </form>
+			  </div>
+			</div>
 		</header>
 	</div>
 	

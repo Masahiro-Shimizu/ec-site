@@ -12,15 +12,23 @@
   <div class="container">
     <h1>カート追加画面</h1>
 
-    <div th:each="item : ${cartItems}">
-      <p th:text="${item.product.productName}"></p>
-      <p th:text="'個数：' + ${item.quantity}"></p>
-      <p th:text="'カート内の合計：¥' + ${item.product.taxPrice * item.quantity}"></p>
+    <div th:each="item : ${cartItems}" class="cart-added-layout">
+      <img th:src="${item.product.imgPath}" class="cart-added-img">
+      <div>
+        <p th:text="'商品名：' + ${item.product.productName}"></p>
+        <p th:text="'個数：' + ${item.quantity}"></p>
+        <p th:text="'カート内の合計：¥' + ${item.product.taxPrice * item.quantity}"></p>
+      </div>
     </div>
 
-    <a class="btn" th:href="@{/cart}">カートに移動</a>
-    <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+    <div class="cart-added-buttons">
+      <a class="btn" th:href="@{/order}">レジに進む</a>
+      <a class="btn" th:href="@{/cart}">カートに移動</a>
+      <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+    </div>
   </div>
+
+  <div th:replace="~{footer :: footer}"></div>
 
 </body>
 </html>

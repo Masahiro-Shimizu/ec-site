@@ -10,25 +10,22 @@
   <div th:replace="~{header :: header}"></div>
 
   <div class="container">
-    <h1>TOPページ</h1>
+    <div class="sale-banner">セール品</div>
 
-    <h2>セール品</h2>
     <div th:if="${#lists.isEmpty(salesItems)}">
       <p>現在セール中の商品はありません</p>
     </div>
     <div class="product-grid">
       <div th:each="item : ${salesItems}" class="product-card">
         <a th:href="@{/products/{id}(id=${item.productId})}">
-          <img th:src="${item.salesImgPath}" width="200" height="150">
+          <img th:src="${item.salesImgPath}">
         </a>
         <p th:text="${item.saleName}"></p>
         <p th:text="'通常価格：¥' + ${item.originalPrice}"></p>
-        <p style="color: red;"
-           th:text="'セール価格：¥' + ${item.salePrice}"></p>
+        <p style="color: red;" th:text="'セール価格：¥' + ${item.salePrice}"></p>
         <p th:text="'割引率：' + ${item.discountRate} + '%'"></p>
       </div>
     </div>
-
     <a class="btn" th:href="@{/products}">商品一覧へ</a>
   </div>
 

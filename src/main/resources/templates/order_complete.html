@@ -10,40 +10,37 @@
   <div th:replace="~{header :: header}"></div>
 
   <div class="container">
-    <h1>注文完了</h1>
-    <p>ご注文ありがとうございます！</p>
+    <h1>購入完了画面</h1>
+    <h2 style="text-align: center; margin-bottom: 30px;">注文完了</h2>
 
     <!-- カートからの購入の場合 -->
     <div th:if="${cartItems != null and !cartItems.isEmpty()}">
-      <h2>ご注文内容</h2>
-      <div th:each="item : ${cartItems}">
-        <img th:src="${item.product.imgPath}" width="100" height="80">
-        <p th:text="'商品名：' + ${item.product.productName}"></p>
-        <p th:text="'数量：' + ${item.quantity}"></p>
-        <p th:text="'消費税込み金額：¥' + ${item.product.taxPrice * item.quantity}"></p>
-        <hr>
+      <div th:each="item : ${cartItems}" class="order-complete-item">
+        <img th:src="${item.product.imgPath}" class="order-complete-img">
+        <div>
+          <p th:text="'商品名：' + ${item.product.productName}"></p>
+          <p th:text="'数量：' + ${item.quantity}"></p>
+          <p th:text="'税込価格：¥' + ${item.product.taxPrice * item.quantity}"></p>
+          <p th:text="'住所：' + ${address}"></p>
+        </div>
       </div>
       <p th:text="'合計金額：¥' + ${totalAmount}"></p>
     </div>
 
     <!-- 単品購入の場合 -->
-    <div th:if="${product != null}">
-      <h2>ご注文内容</h2>
-      <img th:src="${product.imgPath}" width="100" height="80">
-      <p th:text="'商品名：' + ${product.productName}"></p>
-      <p th:text="'数量：' + ${quantity}"></p>
-      <p th:text="'消費税込み金額：¥' + ${totalAmount}"></p>
+    <div th:if="${product != null}" class="order-complete-item">
+      <img th:src="${product.imgPath}" class="order-complete-img">
+      <div>
+        <p th:text="'商品名：' + ${product.productName}"></p>
+        <p th:text="'数量：' + ${quantity}"></p>
+        <p th:text="'税込価格：¥' + ${totalAmount}"></p>
+        <p th:text="'住所：' + ${address}"></p>
+      </div>
     </div>
 
-    <!-- 配送先情報 -->
-    <h2>配送先</h2>
-    <p th:text="'名前：' + ${recipientName}"></p>
-    <p th:text="'住所：' + ${address}"></p>
-    <p th:if="${apartmentName != null and !apartmentName.isEmpty()}"
-       th:text="'アパート名等：' + ${apartmentName}"></p>
-    <p th:text="'支払い方法：' + ${paymentMethod}"></p>
-
-    <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+    <div style="text-align: center; margin-top: 30px;">
+      <a class="btn" th:href="@{/top}">TOP画面に戻る</a>
+    </div>
   </div>
 
   <div th:replace="~{footer :: footer}"></div>
